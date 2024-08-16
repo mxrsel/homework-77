@@ -3,7 +3,7 @@ import { Review, ReviewMutation } from '../types.ts';
 import axiosApi from '../axiosApi.ts';
 
 export const fetchReview = createAsyncThunk<Review[]>('reviews/fetchingALl', async () =>{
-  const {data: reviews} = await axiosApi.get<Review[]>('reviews');
+  const {data: reviews} = await axiosApi.get<Review[]>('http://localhost:8000/reviews');
   return reviews;
 });
 
@@ -16,10 +16,10 @@ export const createReview = createAsyncThunk<void, ReviewMutation>('reviews/crea
     formData.append('image', reviewMutation.image);
   }
 
-  await axiosApi.post('/review', formData);
+  await axiosApi.post('http://localhost:8000/reviews', formData);
 });
 
-export const fetchOneReview = createAsyncThunk<Review, string>('review/fetchOne', async (id) => {
-  const { data: review } = await axiosApi.get<Review>(`/review/${id}`);
+export const fetchOneReview = createAsyncThunk<Review, string>('reviewS/fetchOne', async (id) => {
+  const { data: review } = await axiosApi.get<Review>(`/reviews/${id}`);
   return review;
 });

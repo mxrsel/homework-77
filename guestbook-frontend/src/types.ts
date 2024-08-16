@@ -1,5 +1,5 @@
 export interface Review {
-  id: number;
+  id: string;
   author: string;
   message: string;
   image: string | null;

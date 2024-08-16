@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Review } from '../types.ts';
 import { createReview, fetchOneReview, fetchReview } from './reviewThunks.ts';
 
 interface ReviewState {
-  messages: Review[];
+  reviews: Review[];
   review: Review | null;
   messagesFetch: boolean;
   oneMessageFetch: boolean;
@@ -11,7 +11,7 @@ interface ReviewState {
 }
 
 const initialState: ReviewState = {
-  messages: [],
+  reviews: [],
   review: null,
   messagesFetch: false,
   oneMessageFetch: false,
@@ -19,7 +19,7 @@ const initialState: ReviewState = {
 };
 
 export const reviewSlice = createSlice({
-  name: "review",
+  name: "reviews",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -27,9 +27,9 @@ export const reviewSlice = createSlice({
       .addCase(fetchReview.pending, (state) => {
         state.messagesFetch = true;
       })
-      .addCase(fetchReview.fulfilled, (state, {payload: review}) => {
+      .addCase(fetchReview.fulfilled, (state, action: PayloadAction<Review[]>) => {
         state.messagesFetch = false;
-        state.messages = review;
+        state.reviews = action.payload;
       })
       .addCase(fetchReview.rejected, (state) => {
         state.messagesFetch = false;
@@ -60,7 +60,7 @@ export const reviewSlice = createSlice({
       });
   },
   selectors: {
-    selectReviews: (state) => state.messages,
+    selectReviews: (state) => state.reviews,
     selectReviewsFetching: (state) => state.messagesFetch,
     selectReviewsCreating: (state) => state.isCreated,
     selectOneReview: (state) => state.review,
